@@ -25,31 +25,5 @@ cp -r "${original_ssl_path}/fullchain.cer" "${target_dsm_ssl_path}/fullchain.pem
 
 # 重启nginx服务, 使新SSL文件生效
 # Restart the nginx service to make the new SSL file take effect
+systemctl restart nginx
 synow3tool --gen-all && systemctl reload nginx
-
-
-#### 2. acme SSL -> docker nginx SSL
-target_docker_nginx_ssl_path="/volume1/docker/nginx_1.27.3/ssl/lib00.com"
-# 执行ssl替换操作
-# Perform ssl replacement operation
-cp -r "${original_ssl_path}/lib00.com.key" "${target_docker_nginx_ssl_path}/lib00.com.key"
-cp -r "${original_ssl_path}/fullchain.cer" "${target_docker_nginx_ssl_path}/fullchain.cer"
-
-# 重启nginx服务, 使新SSL文件生效
-# Restart the nginx service to make the new SSL file take effect
-docker restart ee-nginx-1.27.3
-
-####3. acme SSL -> docker jellyfin SSL
-target_docker_jellyfin_ssl_path="/volume1/docker/jellyfin_ny/config/ssl"
-
-# ssl to pfx
-openssl pkcs12 -export -out "${original_ssl_path}/encode_pfx_lib00.com.pfx" -inkey "${original_ssl_path}/lib00.com.key" -in "${original_ssl_path}/lib00.com.cer" -password pass:dpit2024
-
-
-# 执行ssl替换操作
-# Perform ssl replacement operation
-cp -r "${original_ssl_path}/encode_pfx_lib00.com.pfx" "${target_docker_jellyfin_ssl_path}/encode_pfx_lib00.com.pfx"
-
-# 重启nginx服务, 使新SSL文件生效
-# Restart the nginx service to make the new SSL file take effect
-docker restart ee-nyanmisaka-jellyfin
