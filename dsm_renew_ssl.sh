@@ -23,7 +23,6 @@ cp -r "${original_ssl_path}/lib00.com.cer" "${target_dsm_ssl_path}/cert.pem"
 cp -r "${original_ssl_path}/lib00.com.key" "${target_dsm_ssl_path}/privkey.pem"
 cp -r "${original_ssl_path}/fullchain.cer" "${target_dsm_ssl_path}/fullchain.pem"
 
-# 重启nginx服务, 使新SSL文件生效
-# Restart the nginx service to make the new SSL file take effect
-systemctl restart nginx
+# 使用nginx reload命令, 使新SSL文件生效
+# use nginx reload command to make the new SSL file take effect
 synow3tool --gen-all && systemctl reload nginx
